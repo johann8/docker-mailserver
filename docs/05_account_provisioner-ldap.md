@@ -14,7 +14,8 @@ ACCOUNT_PROVISIONER=LDAP
 ------------------
 ```
 
-- OpenLDAP docker container will be run separately.
+OpenLDAP docker container will be run separately.
+- Create docker-compose.yml file
 ```bash
 # File docker-compose.yml for OpenLDAP docker container
 cd /opt/openldap
@@ -108,7 +109,10 @@ secrets:
   openldap-user-passwords:
     file: ${DOCKERDIR}/data/config/ldap/secrets/${SLAPD_USERPW_SECRET}
 ------------------
+```
 
+- Create .env file
+```bash
 # .env file
 cd /opt/openldap
 vi .env
@@ -157,10 +161,14 @@ PHPLDAPADMIN_SEARCH_BASE="ou=Users,${SLAPD_SUFFIX}"
 DOCKER_LDAP_HEALTHCHECK_USERNAME="cn=techuser,ou=System,dc=myfirma,dc=de"
 DOCKER_LDAP_HEALTHCHECK_PASSWORD=MySuperPassword78910
 ------------------
+```
 
+- Create docker-compose.override.yml file
+
+```bash
 # docker-compose.override.yml file
 cd /opt/openldap
-vi 
+vim docker-compose.override.yml 
 -----------------
 services:
 
