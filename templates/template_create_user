@@ -1,0 +1,43 @@
+# create user {{ _UID }}
+dn: uid={{ _UID }},ou=Users,{{ LDAP_BASE_DN }}
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+objectclass: PostfixBookMailAccount
+uid: {{ _UID }}
+sn: {{ SN }}
+givenName: {{ GIVEN_NAME }}
+cn: {{ _UID }}
+displayName: {{ GIVEN_NAME }} {{ SN }}
+loginShell: /bin/bash
+uidNumber: {{ UID_NUMBER }}
+gidNumber: {{ UID_NUMBER }}
+homeDirectory: /home/{{ _UID }}
+shadowMax: 60
+shadowMin: 1
+shadowWarning: 7
+shadowInactive: 7
+shadowLastChange: 0
+mail: {{ _UID }}@{{ DOMAIN_NAME }}
+mailenabled: TRUE
+# Example: mailquota: 750M | 3G
+mailquota: 2G
+telephoneNumber: {{ TELEPHONE_NUMBER }}
+mobile: {{ TELEPHONE_NUMBER }}
+employeeType: {{ EMPLOYEE_TYPE }}
+description: {{ DESCRIPTION }}
+pwdPolicySubentry: cn=passwordDefault,ou=PasswordPolicy,{{ LDAP_BASE_DN }}
+
+# create group {{ _UID }}
+dn: cn={{ _UID }},ou=Groups,{{ LDAP_BASE_DN }}
+objectClass: posixGroup
+cn: {{ _UID }}
+gidNumber: {{ UID_NUMBER }}
+memberUid: {{ _UID }}
+
+# add user {{ _UID }} into group Mail-User
+dn: cn=Mail-User,ou=Groups,{{ LDAP_BASE_DN }}
+changetype: add
+cn: Mail-User
+objectclass: groupOfUniqueNames
+uniqueMember: uid={{ _UID }},ou=Users,{{ LDAP_BASE_DN }}

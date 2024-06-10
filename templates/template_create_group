@@ -1,0 +1,12 @@
+# create internal alias Gruppe {{ _CN }}
+# Mails an {{ _CN }}@{{ DOMAIN_NAME }} werden an die User weitergeleitet, die attribut mailGroupMember haben
+dn: mail={{ _CN }}@{{ DOMAIN_NAME }},ou=Groups,{{ LDAP_BASE_DN }}
+cn: {{ _CN }}
+mail: {{ _CN }}@{{ DOMAIN_NAME }}
+mailenabled: TRUE
+mailgidnumber: 5000
+mailuidnumber: 5000
+objectClass: inetOrgPerson
+objectclass: PostfixBookMailAccount
+sn: {{ _CN }} {{ FIRMNAME }} 
+description: Mail Distribution Group
