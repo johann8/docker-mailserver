@@ -1,6 +1,5 @@
 <h1 align="center">Install Roundcube plugin enigma</h1>
 
-- 
 
 ```bash
 # add enigma plugin in .env file
