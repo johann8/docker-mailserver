@@ -154,3 +154,56 @@ vim docker-compose.override.yml
       - proxy
 -------------
 ```
+- Customize `Roundcube` config file
+
+```bash
+# create file local.inc.php
+cat > /opt/mailserver/data/roundcube/config/local.inc.php << 'EOL'
+// ### === Path inside docker container: /var/roundcube/config/local.inc.php ===
+
+// SMTP username (if required) - wird auch für Auth von managesieve benötigt
+// Note: %u variable will be replaced with current user's username
+$config['smtp_user'] = '%u';
+
+// SMTP password (if required) - wird auch für Auth von managesieve benötigt
+// Note: When set to '%p' current user's password will be used
+$config['smtp_pass'] = '%p';
+
+// Make use of the built-in spell checker.
+$config['enable_spellcheck'] = true;
+
+// Set the spell checking engine. Possible values:
+// - 'googie'  - the default (also used for connecting to Nox Spell Server, see 'spellcheck_uri' setting)
+// - 'pspell'  - requires the PHP Pspell module and aspell installed
+// - 'enchant' - requires the PHP Enchant module
+// - 'atd'     - install your own After the Deadline server or check with the people at http://www.afterthedeadline.com before using their API
+// Since Google shut down their public spell checking service, the default settings
+// connect to http://spell.roundcube.net which is a hosted service provided by Roundcube.
+// You can connect to any other googie-compliant service by setting 'spellcheck_uri' accordingly.
+$config['spellcheck_engine'] = 'pspell';
+
+// These languages can be selected for spell checking.
+// Configure as a PHP style hash array: ['en'=>'English', 'de'=>'Deutsch'];
+// Leave empty for default set of available language.
+$config['spellcheck_languages'] = ['en'=>'English', 'de'=>'Deutsch'];
+
+
+// show up to X items in messages list view
+$config['mail_pagesize'] = 50;
+
+// provide an URL where a user can get support for this Roundcube installation
+// PLEASE DO NOT LINK TO THE ROUNDCUBE.NET WEBSITE HERE!
+$config['support_url'] = 'https://autodiscover.rohrkabel.eu/';
+EOL
+
+# Activate SSL in docker-compose.yml if the certificates were created by traefik
+cd /opt/mailserver
+vim docker-compose.yml
+-------------------
+...
+      # === Enable SSL ===
+      - SSL_TYPE=letsencrypt
+      - SSL_DOMAIN=mail.rohrkabel.eu
+...
+--------------------
+```
