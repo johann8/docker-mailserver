@@ -120,7 +120,7 @@ services:
       - LDAP_SERVER_HOST=ldap://ldap.myfirma.de
       - LDAP_SEARCH_BASE=ou=Users,dc=myfirma,dc=de
       - LDAP_BIND_DN=cn=techuser,ou=System,dc=myfirma,dc=de
-      - LDAP_BIND_PW=MRYayXrX77wiwkvdVkeWRzYpbtKiWp             # cat /opt/openldap/data/config/ldap/ldif/bind_DN_user_techuser.ldif
+      - LDAP_BIND_PW=${LDAP_BIND_PW}                            # cat /opt/openldap/data/config/ldap/ldif/bind_DN_user_techuser.ldif
       - LDAP_QUERY_FILTER_USER=(&(objectClass=inetOrgPerson)(|(uid=%u)(mail=%u))(mailEnabled=TRUE))
       - LDAP_QUERY_FILTER_GROUP=(&(mailGroupMember=%s)(mailEnabled=TRUE))
       - LDAP_QUERY_FILTER_ALIAS=(&(mailAlias=%s)(mailEnabled=TRUE))
