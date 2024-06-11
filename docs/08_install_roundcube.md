@@ -126,3 +126,31 @@ DOCKER_BUILDKIT=0; docker build -t johann8/${_TAG}:${_VERSION} . 2>&1 | tee ./bu
 cd /opt/mailserver
 vim .env
 ```
+- Since we use Traefik, he will provide the necessary certificates for us.
+
+```bash
+# create file docker-compose.override.yml
+cd /opt/mailserver
+vim docker-compose.override.yml
+--------------
+  roundcubenginx:
+    labels:
+      - "traefik.enable=true"
+     ### ==== to https ====
+      - "traefik.http.routers.roundcubenginx-secure.rule=Host(`$HOSTNAME0.${DOMAINNAME}`)" # Host(`mail.${DOMAINNAME}`) || Host(`mta-sts.${DOMAINNAME}`)"
+      - "traefik.http.routers.roundcubenginx-secure.entrypoints=websecure"
+      - "traefik.http.routers.roundcubenginx-secure.tls=true"
+      - "traefik.http.routers.roundcubenginx-secure.tls.certresolver=production"  # für eigene Zertifikate
+      - "traefik.http.routers.roundcubenginx-secure.tls.domains[0].main=mail.${DOMAINNAME}"   # Für Letsencrypt: Set main domain
+      - "traefik.http.routers.roundcubenginx-secure.tls.domains[0].sans=imap.${DOMAINNAME},smtp.${DOMAINNAME},rc.${DOMAINNAME},mta-sts.${DOMAINNAME}" # Add SANs Hosts
+      ### ==== to service ====
+      - "traefik.http.routers.roundcubenginx-secure.service=roundcubenginx"
+      - "traefik.http.services.roundcubenginx.loadbalancer.server.port=$PORT0"
+      - "traefik.docker.network=proxy"
+      ### ==== redirect to authelia for secure login ====
+      #- "traefik.http.routers.roundcubenginx-secure.middlewares=authelia@docker,rate-limit@file,secHeaders@file"
+      - "traefik.http.routers.roundcubenginx-secure.middlewares=rate-limit@file,secHeaders@file"
+    networks:
+      - proxy
+-------------
+```
