@@ -8,7 +8,7 @@
   - [FILE as account provisioner](docs/04_account_provisioner-file.md)
   - [OpenLDAP Server as account provisioner](docs/05_account_provisioner-ldap.md)
   - [Set up Dovecot full text search](docs/06_setup_dovecot_fulltext_search.md)
-  - [](docs/)
+  - [Dovecot customize IMAP folders](docs/07_dovecot_customize_imap_folders.md)
   - [](docs/)
   - [](docs/)
   - [](docs/)
