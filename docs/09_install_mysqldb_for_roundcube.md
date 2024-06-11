@@ -46,4 +46,52 @@ vim /opt/mailserver/docker-compose.yml
 cd /opt/mailserver
 vim .env
 
+# create folders for database
+mkdir -p /opt/mailserver/data/mariadb/{config,dbdata,socket}
+tree -L 3 -d /opt/mailserver/
+
+# create config datei for mariadb
+cat > /opt/mailserver/data/mariadb/config/my.cnf << 'EOL'
+[mysqld]
+default-time-zone              = 'Europe/Berlin'
+character-set-client-handshake = FALSE
+character-set-server           = utf8mb4
+collation-server               = utf8mb4_unicode_ci
+max_allowed_packet             = 192M
+max-connections                = 350
+key_buffer_size                = 0
+read_buffer_size               = 192K
+sort_buffer_size               = 2M
+innodb_buffer_pool_size        = 24M
+read_rnd_buffer_size           = 256K
+tmp_table_size                 = 24M
+performance_schema             = 0
+innodb-strict-mode             = 0
+thread_cache_size              = 8
+query_cache_type               = 0
+query_cache_size               = 0
+max_heap_table_size            = 48M
+thread_stack                   = 256K
+skip-host-cache
+#skip-name-resolve
+log-warnings                   = 0
+event_scheduler                = 1
+
+[client]
+default-character-set          = utf8mb4
+
+[mysql]
+default-character-set          = utf8mb4
+EOL
+
+# if docker container is running, you can check DB
+cd /opt/mailserver
+docker-compose exec mariadb bash
+env
+mysql -uroot -p
+MariaDB [(none)]> show databases;
+MariaDB [(none)]> use mysql;
+MariaDB [mysql]> select HOST,USER,PASSWORD from user;
+MariaDB [mysql]> use roundcubedb;
+MariaDB [roundcubedb]> show tables;
 ```
