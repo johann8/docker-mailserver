@@ -1,6 +1,6 @@
 <h1 align="center">Variable ACCOUNT_PROVISIONER is empty or set to "FILE"</h1>
 
-I will use an OpenLDAp server for the user accounts. The OpenLDAP server will not be accessible from the Internet. The administration is done via Phpldapadmin. How to install and set up an OpenLDAp server is described here. A read-only user is used for the connection.
+I will use an OpenLDAp server for the user accounts. The OpenLDAP server will not be accessible from the Internet. The administration is done via Phpldapadmin. How to install and set up an OpenLDAp server is described [here](https://github.com/johann8/openldap-alpine). A read-only user is used for the connection.
 
 - Set var `ACCOUNT_PROVISIONER=LDAP`
 ```bash
