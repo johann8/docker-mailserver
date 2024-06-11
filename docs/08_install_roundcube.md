@@ -102,6 +102,9 @@ chown -R 82:82 /opt/mailserver/data/roundcube/enigma/pgp_homedir/
 
 ```bash
 # create Docker file
+mkdir -p /tmp/roundcube && cd /tmp/roundcube
+vim Dockerfile
+---------------
 FROM roundcube/roundcubemail:latest-fpm-alpine
 
 LABEL Maintainer="JH <jh@localhost>" \
@@ -111,6 +114,7 @@ RUN apk add --update --no-cache gnupg
 
 # Remove alpine cache
 RUN rm -rf /var/cache/apk/*
+---------------
 
 # build docker image
 _VERSION=1.6.7
@@ -118,7 +122,7 @@ _TAG=alpine-roundcube
 
 DOCKER_BUILDKIT=0; docker build -t johann8/${_TAG}:${_VERSION} . 2>&1 | tee ./build.log
 
-# adjust env vars
+# adjust roundcube env vars
 cd /opt/mailserver
 vim .env
 ```
