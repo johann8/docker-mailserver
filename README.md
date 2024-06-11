@@ -12,7 +12,7 @@
   - [Install Roundcube](docs/08_install_roundcube.md)
   - [Install MySQL DB for Roundcube](docs/09_install_mysqldb_for_roundcube.md)
   - [Dovecot install Managesieve plugin](docs/10_dovecot_install_managesieve_plugin.md)
-  - [](docs/)
+  - [Install Roundcube plugin enigma](docs/11_install_roundcube_plugin_enigma.md)
   - [](docs/)
   - [](docs/)
   - [](docs/)
