@@ -106,7 +106,7 @@ vim docker-compose.yml
 ...
     volumes:
 ...
-      - ./data/dms/config/dovecot/20-managesieve.conf:/etc/dovecot/conf.d/20-managesieve.conf:ro # Für managesieve
+      - ./data/dms/config/dovecot/20-managesieve.conf:/etc/dovecot/conf.d/20-managesieve.conf:ro # For managesieve
 ...
 --------------------
 
@@ -120,7 +120,7 @@ ROUNDCUBEMAIL_PLUGINS=archive,zipdownload,password,emoticons,identicon,markasjun
 ...
 --------------------
 
-# rename managesieve config file (Achtung!!!: FQDN anpassen)
+# rename managesieve plugin config file
 mv /opt/mailserver/data/roundcube/appdata/plugins/managesieve/config.inc.php.dist /opt/mailserver/data/roundcube/appdata/plugins/managesieve/config.inc.php
 
 # Set access to tls://mail.myfirma.de:4190
