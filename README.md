@@ -10,7 +10,7 @@
   - [Set up Dovecot full text search](docs/06_setup_dovecot_fulltext_search.md)
   - [Dovecot customize IMAP folders](docs/07_dovecot_customize_imap_folders.md)
   - [Install Roundcube](docs/08_install_roundcube.md)
-  - [](docs/)
+  - [Install MySQL DB for Roundcube](docs/09_install_mysqldb_for_roundcube.md)
   - [](docs/)
   - [](docs/)
 
