@@ -8,10 +8,10 @@ cd /opt/mailserver
 DMS_GITHUB_URL="https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master"
 wget "${DMS_GITHUB_URL}/compose.yaml"
 wget "${DMS_GITHUB_URL}/mailserver.env"
-mv compose.yaml docker-compose.yml
+mv compose.yaml compose.yaml_bck
 
 # create docker-compose.yml
-cat > docker-compose.yml << 'EOL'
+cat > /opt/mailserver/docker-compose.yml << 'EOL'
 networks:
   mailserverNet:
     driver: bridge
@@ -168,8 +168,112 @@ cd /opt/mailserver
 DOMAINNAME=testdomain.de
 sed -i "s/myfirma.de/${DOMAINNAME}/" docker-compose.yml
 
-# Customize LDAP section - Postfix LDAP Integration
-
+# Customize LDAP section and adjust vars
+vim /opt/mailserver/docker-compose.yml
 ```
 
+```bash
+# create file roundcube.env and adjust vars
+cat > /opt/mailserver/roundcube.env << 'EOL'
+### === SYSTEM ===
+TZ=Europe/Berlin
+DOCKERDIR=/opt/mailserver
 
+### === Network ===
+DOMAINNAME=myfirma.de
+HOSTNAME0=rc
+PORT0=80
+HOSTNAME1=rspamd
+PORT1=11334
+IPV4_NETWORK=172.26.10
+IPV6_NETWORK=fd4d:6169:6c63:6f77
+
+### === APP ROUNDCUBE ===
+RC_VERSION=latest
+#RC_VERSION=latest-fpm-alpine
+#RC_VERSION=1.6.x-apache
+
+# PostgreSQL => pgsql
+# MySQL => mysql
+# SQLite => sqlite
+ROUNDCUBEMAIL_DB_TYPE=mysql
+
+# Use this parameter if you use PostgreSQL or MySQL
+#ROUNDCUBEMAIL_DB_HOST=localhost
+
+# Use this parameter if you use PostgreSQL or MySQL
+# PostgreSQL => 5432
+# MySQL => 3306
+#ROUNDCUBEMAIL_DB_PORT=3306
+
+# Use this parameter if you use PostgreSQL or MySQL
+#ROUNDCUBEMAIL_DB_NAME=roundcube
+
+# Use this parameter if you use PostgreSQL or MySQL
+#ROUNDCUBEMAIL_DB_USER=roundcube
+
+# Use this parameter if you use PostgreSQL or MySQL
+#ROUNDCUBEMAIL_DB_PASSWORD=roundcube
+
+# Roundcube Skin
+ROUNDCUBEMAIL_SKIN=elastic
+
+# Doc : https://github.com/roundcube/google-spell-pspell
+#ROUNDCUBEMAIL_SPELLCHECK_URI
+
+# Roundcube languages
+ROUNDCUBEMAIL_ASPELL_DICTS=de,en
+
+# Roundcube max upload file size
+ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=10M
+
+# Roundcube plugins
+#ROUNDCUBEMAIL_INSTALL_PLUGINS=true
+#ROUNDCUBEMAIL_PLUGINS=archive,zipdownload,password,emoticons,identicon,markasjunk,vcard_attachments,newmail_notifier,managesieve,enigma
+ROUNDCUBEMAIL_PLUGINS=archive,zipdownload,password,emoticons,new_user_dialog,identicon,markasjunk,vcard_attachments,newmail_notifier,managesieve,enigma
+
+#ROUNDCUBEMAIL_DEFAULT_HOST=tls://mail.${DOMAINNAME}
+ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.${DOMAINNAME}
+ROUNDCUBEMAIL_DEFAULT_PORT=993
+#ROUNDCUBEMAIL_DEFAULT_PORT=143
+
+ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.${DOMAINNAME}
+ROUNDCUBEMAIL_SMTP_PORT=587
+#ROUNDCUBEMAIL_SMTP_PORT=25
+
+
+# Automatically add this domain to user names for login
+ROUNDCUBEMAIL_USERNAME_DOMAIN=${DOMAINNAME}
+
+# head /dev/urandom | base64 | head -c 24
+ROUNDCUBEMAIL_DES_KEY=cEhkR+vAh4545HsDjh7DyYUGN
+
+#
+### === LDAP ===
+#
+LDAP_BIND_PW=MySuperPW_Bind_User
+
+#
+### === MYSQL DB ===
+#
+# pwgen -1cnsB 30 1
+VERSION_DB=10.11
+MARIADB_ROOT_PASSWORD=MySuperPW_Root
+ROUNDCUBE_DB_HOST=mariadb
+ROUNDCUBE_DB_PORT=3306
+ROUNDCUBE_DB_NAME=roundcubedb
+ROUNDCUBE_DB_USER=roundcube
+ROUNDCUBE_DB_PASS=MySuperPW_DB_User
+EOL
+
+# create symlink
+cd /opt/mailserver
+ln -s ./roundcube.env ./.env
+
+# adjust vars
+vim /opt/mailserver/roundcube.env
+
+# run docker container
+cd /opt/mailserver
+docker compose up -d
+```
