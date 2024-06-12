@@ -16,6 +16,7 @@
   - [Setup RSPAMD Web Interface](docs/12_setup_rspamd_webinterface.md)
   - [Setup Fail2ban](docs/13_setup_fail2ban.md)
   - [Setup DNS Resolver Unbound](docs/14_setup_dns_resolver_unbound.md)
+  - [Setup autodiscover mail settings](docs/15_setup_autodiscover_mail_settings.md)
   - [](docs/)
 
 ## Introduction
