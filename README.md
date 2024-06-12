@@ -14,7 +14,7 @@
   - [Dovecot install Managesieve plugin](docs/10_dovecot_install_managesieve_plugin.md)
   - [Install Roundcube plugin enigma](docs/11_install_roundcube_plugin_enigma.md)
   - [Setup RSPAMD Web Interface](docs/12_setup_rspamd_webinterface.md)
-  - [Setup Fail2ban](docs/docs/13_setup_fail2ban.md)
+  - [Setup Fail2ban](docs/13_setup_fail2ban.md)
   - [](docs/)
   - [](docs/)
 
