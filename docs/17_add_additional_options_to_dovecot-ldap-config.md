@@ -24,4 +24,10 @@ vim /opt/mailserver/data/dms/config/user-patches.sh
 # restart docker container
 cd /opt/mailserver 
 docker-compose down && docker-compose up -d
+
+# Test command: doveadm -A
+docker compose exec mailserver doveadm index -A -q \*
+docker compose exec mailserver doveadm mailbox list -A
+docker compose exec mailserver doveadm -Dv search -A ALL
+docker compose exec mailserver doveadm fts optimize -A
 ```
